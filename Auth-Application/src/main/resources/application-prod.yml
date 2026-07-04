@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  main:
+       allow-circular-references: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+  #  OAUTH Config
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:test-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:test-client-secret}
+            scope:
+              - email
+              - profile
+              - openid
+          github:
+            client-id: ${GITHUB_CLIENT_ID:test-client-id}
+            client-secret: ${GITHUB_CLIENT_SECRET:test-client-secret}
+            scope:
+              - user:email
+              - read:user
+# JWT CONFIG 
+security:
+  jwt:
+    secret: ${JWT_SECRET:41fcc3879db2b950027c71d02810723b2edcf01c9d529583d026f69860358cd1}
+    issuer: ${JWT_Issuer:api.substring.com}
+    access-ttl-second: ${JWT_ACCESS_TTL_SECOND:600000}
+    refresh-ttl-second: ${JWT_REFRESH_TTL_SECONDS:1200000}
+    refresh-token-cookie-name: ${JWT_REFRESH_COOKIE_NAME:refreshToken}
+    cookie-secure: ${JWT_COOKIE_SECURE:true}
+    cookie-http-only: ${JWT_COOKIE_HTTP_ONLY:true}
+    cookie-same-site: ${JWT_COOKIE_SAME_SITE:lax}
+    cookie-domain: ${JWT_COOKIE_DOMAIN:localhost}
+    
+    
+    

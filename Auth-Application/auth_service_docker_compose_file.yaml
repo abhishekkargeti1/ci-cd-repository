@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysqlContainers
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "1808"
+      MYSQL_DATABASE: employee
+    ports:
+      - "3307:3306"
+    volumes:
+      - D:\Docker\data:/var/lib/mysql
+  authservice:
+     image: abhishekkargeti/myauthserviceimage:latest
+     container_name: myAuthServiceContainer
+     ports:
+      - "8080:8080"
+     environment:
+        DB_URL: jdbc:mysql://db:3306/employee
+        DB_USERNAME: root
+        DB_PASSWORD: 1808
+     depends_on:
+      - db

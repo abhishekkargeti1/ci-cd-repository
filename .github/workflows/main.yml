@@ -48,10 +48,10 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
             docker stop myauthserviceapp || true
             docker rm myauthserviceapp || true
-            docker run -d \
+            docker run -d -it \
               --name myauthserviceapp \
               -p 8080:8087 \
-              -e DB_URL=jdbc:mysql://mysqlcontainer:3306/your_database \
+              -e DB_URL=jdbc:mysql://mysqlcontainer \
               -e DB_USERNAME=root \
               -e DB_PASSWORD=1808 \
               --network my_auth_service_network \

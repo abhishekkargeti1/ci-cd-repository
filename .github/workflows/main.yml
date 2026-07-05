@@ -2,9 +2,8 @@ name: Auth Service Build and Deploy
 
 on:
   push:
-    branch:
-         -main
-		 
+    branches:
+      -main
 env:
    IMAGE_NAME: myauthserviceimage
 

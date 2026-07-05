@@ -3,6 +3,6 @@ spring:
     name: Auth-Application
   profiles:
     active:
-    - dev
+    - prod
 server:
   port: 8087

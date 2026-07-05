@@ -53,9 +53,9 @@ jobs:
             docker run -d -it \
               --name myauthserviceapp \
               -p 8080:8087 \
-              -e DB_URL=jdbc:mysql://mysqlcontainer:3306/employee \
-              -e DB_USERNAME=root \
-              -e DB_PASSWORD=1808 \
+              -e DB_URL= jdbc:mysql://mysqlcontainer:3306/employee \
+              -e DB_USERNAME= root \
+              -e DB_PASSWORD= 1808 \
               --network my_auth_service_network \
               ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
             docker image prune -f

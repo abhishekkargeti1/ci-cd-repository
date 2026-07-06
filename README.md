@@ -1,78 +1,115 @@
-# 🚀 CI/CD Pipeline for Spring Boot Authentication Service
+# 🚀 Authentication Service with OAuth2 & Automated CI/CD Pipeline
 
-A complete CI/CD pipeline for a Spring Boot Authentication Service using **GitHub Actions**, **Docker**, **Docker Hub**, and **AWS EC2**.
+![Java](https://img.shields.io/badge/Java-21-red)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-3.x-brightgreen)
+![Docker](https://img.shields.io/badge/Docker-Container-blue)
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-black)
+![AWS EC2](https://img.shields.io/badge/AWS-EC2-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-This project demonstrates how to automate the build, containerization, and deployment of a Spring Boot application whenever changes are pushed to the `main` branch.
+## 📖 Overview
 
----
+This project demonstrates a **production-ready Authentication & Authorization Service** developed using **Spring Boot**, **Spring Security**, **OAuth2**, and **JWT**. Along with the backend service, the project includes a complete **CI/CD pipeline** using **GitHub Actions**, **Docker**, **Docker Hub**, and **AWS EC2** to automate the entire deployment lifecycle.
 
-## 📌 Project Overview
-
-The pipeline automatically performs the following tasks:
-
-- Clone the latest source code from GitHub
-- Build the application using Maven
-- Create a Docker image
-- Push the image to Docker Hub
-- Connect to an AWS EC2 instance using SSH
-- Pull the latest Docker image
-- Stop and remove the existing container
-- Deploy the latest version automatically
-
-This enables **Continuous Integration** and **Continuous Deployment (CI/CD)** with minimal manual intervention.
+The goal of this project is to showcase modern backend development along with DevOps practices by enabling automatic build, containerization, and deployment whenever new code is pushed to the repository.
 
 ---
 
-## 🏗️ Architecture
+# 📌 Project Objectives
 
-```
-Developer
-     │
-     ▼
-GitHub Repository
-     │
-     ▼
-GitHub Actions
-     │
-     ├── Build Maven Project
-     ├── Create Docker Image
-     ├── Push Image to Docker Hub
-     │
-     ▼
-AWS EC2 Server
-     │
-     ├── Pull Latest Image
-     ├── Stop Existing Container
-     ├── Remove Old Container
-     └── Start New Container
-```
+- Build a secure Authentication Server for microservices.
+- Implement OAuth2 authentication.
+- Generate JWT Access Tokens and Refresh Tokens.
+- Secure REST APIs using Spring Security.
+- Containerize the application using Docker.
+- Automate build and deployment using GitHub Actions.
+- Deploy the application automatically on AWS EC2.
+- Store sensitive credentials securely using GitHub Secrets.
 
 ---
 
-## 🛠️ Tech Stack
+# ✨ Features
+
+## Authentication Features
+
+- User Registration
+- Secure User Login
+- OAuth2 Authentication
+- JWT Access Token Generation
+- JWT Refresh Token Generation
+- Role-Based Authorization (RBAC)
+- Password Encryption using BCrypt
+- Stateless Authentication
+- Protected REST APIs
+- Token Validation
+- Refresh Token Mechanism
+- Secure Environment Variable Configuration
+
+---
+
+## DevOps Features
+
+- Continuous Integration (CI)
+- Continuous Deployment (CD)
+- Automated Maven Build
+- Docker Image Creation
+- Docker Hub Integration
+- AWS EC2 Deployment
+- GitHub Actions Workflow
+- SSH-based Remote Deployment
+- Automatic Container Replacement
+- Secure Secret Management
+
+---
+
+# 🛠 Technology Stack
+
+## Backend
 
 - Java 21
 - Spring Boot
+- Spring Security
+- OAuth2
+- JWT
+- REST APIs
+
+## Database
+
+- MySQL
+
+## Build Tool
+
 - Maven
+
+## DevOps
+
 - Docker
 - Docker Hub
 - GitHub Actions
 - AWS EC2
-- Linux
+- Ubuntu Linux
 - SSH
 
 ---
 
-## 📂 Repository Structure
+# 📂 Project Structure
 
 ```
-.
-├── .github/
-│   └── workflows/
+Authentication-Service
+│
+├── .github
+│   └── workflows
 │       └── deploy.yml
-├── src/
-├── pom.xml
+│
+├── src
+│   ├── main
+│   │   ├── java
+│   │   ├── resources
+│   │   └── ...
+│   └── test
+│
 ├── Dockerfile
+├── pom.xml
 ├── mvnw
 ├── mvnw.cmd
 └── README.md
@@ -80,170 +117,338 @@ AWS EC2 Server
 
 ---
 
-## ⚙️ GitHub Actions Workflow
+# 🔐 Authentication Flow
 
-The workflow is triggered automatically whenever code is pushed to the **main** branch.
-
-### Workflow Steps
-
-- Checkout Repository
-- Setup Java
-- Build Spring Boot Project
-- Login to Docker Hub
-- Build Docker Image
-- Push Docker Image
-- Connect to AWS EC2
-- Pull Latest Image
-- Stop Existing Container
-- Remove Old Container
-- Deploy Updated Container
-
----
-
-## 🔐 GitHub Secrets
-
-The following GitHub Secrets are required:
-
-| Secret | Description |
-|---------|-------------|
-| DOCKER_USERNAME | Docker Hub Username |
-| DOCKER_PASSWORD | Docker Hub Password/Access Token |
-| EC2_HOST | AWS EC2 Public IP |
-| EC2_USER | SSH Username (ubuntu/ec2-user) |
-| EC2_SSH_KEY | Private SSH Key |
-| MYSQL_URL | Database URL |
-| MYSQL_USERNAME | Database Username |
-| MYSQL_PASSWORD | Database Password |
-| JWT_SECRET | JWT Secret Key |
-
-> **Note:** Never commit secrets directly into the repository. Use GitHub Secrets for secure credential management.
-
----
-
-## 🐳 Docker
-
-The application is containerized using Docker.
-
-### Build Image
-
-```bash
-docker build -t auth-service .
+```
+Client
+   │
+   │ Login Request
+   ▼
+Authentication API
+   │
+   ▼
+Validate Credentials
+   │
+   ▼
+Generate JWT Access Token
+Generate Refresh Token
+   │
+   ▼
+Return Tokens
+   │
+   ▼
+Client Uses Access Token
+   │
+   ▼
+Protected APIs
 ```
 
-### Run Container
+---
+
+# 🏗 CI/CD Architecture
+
+```
+                Developer
+
+                    │
+
+             Push Code to GitHub
+
+                    │
+
+                    ▼
+
+             GitHub Repository
+
+                    │
+
+                    ▼
+
+             GitHub Actions
+
+        ┌──────────────────────┐
+        │ Checkout Source Code │
+        ├──────────────────────┤
+        │ Setup Java           │
+        ├──────────────────────┤
+        │ Maven Build          │
+        ├──────────────────────┤
+        │ Build Docker Image   │
+        ├──────────────────────┤
+        │ Push to Docker Hub   │
+        └──────────────────────┘
+
+                    │
+
+                    ▼
+
+             AWS EC2 Server
+
+        ┌──────────────────────┐
+        │ Pull Latest Image    │
+        ├──────────────────────┤
+        │ Stop Old Container   │
+        ├──────────────────────┤
+        │ Remove Container     │
+        ├──────────────────────┤
+        │ Start New Container  │
+        └──────────────────────┘
+
+                    │
+
+                    ▼
+
+          Updated Application Live
+```
+
+---
+
+# ⚙️ CI/CD Workflow
+
+Whenever code is pushed to the **main** branch, GitHub Actions automatically executes the following steps:
+
+### 1️⃣ Checkout Repository
+
+Downloads the latest source code.
+
+---
+
+### 2️⃣ Setup Java
+
+Installs Java 21 required for the project.
+
+---
+
+### 3️⃣ Build Application
+
+Uses Maven to compile and package the Spring Boot application.
+
+```bash
+mvn clean package
+```
+
+---
+
+### 4️⃣ Login to Docker Hub
+
+Authenticates securely using GitHub Secrets.
+
+---
+
+### 5️⃣ Build Docker Image
+
+Creates a Docker image of the Spring Boot application.
+
+```bash
+docker build -t username/auth-service .
+```
+
+---
+
+### 6️⃣ Push Docker Image
+
+Pushes the latest image to Docker Hub.
+
+```bash
+docker push username/auth-service
+```
+
+---
+
+### 7️⃣ Connect to AWS EC2
+
+GitHub Actions establishes an SSH connection with the EC2 instance.
+
+---
+
+### 8️⃣ Pull Latest Image
+
+```bash
+docker pull username/auth-service
+```
+
+---
+
+### 9️⃣ Stop Existing Container
+
+```bash
+docker stop auth-service
+```
+
+---
+
+### 🔟 Remove Old Container
+
+```bash
+docker rm auth-service
+```
+
+---
+
+### 1️⃣1️⃣ Deploy New Container
 
 ```bash
 docker run -d \
 -p 8080:8080 \
 --name auth-service \
-auth-service
+username/auth-service
+```
+
+The latest version of the application is now live.
+
+---
+
+# 🔑 GitHub Secrets
+
+The following secrets are configured for secure deployment.
+
+| Secret Name | Description |
+|-------------|-------------|
+| DOCKER_USERNAME | Docker Hub Username |
+| DOCKER_PASSWORD | Docker Hub Password / Access Token |
+| EC2_HOST | AWS EC2 Public IP |
+| EC2_USER | SSH User |
+| EC2_SSH_KEY | Private SSH Key |
+| MYSQL_URL | Database URL |
+| MYSQL_USERNAME | Database Username |
+| MYSQL_PASSWORD | Database Password |
+| JWT_SECRET | JWT Secret |
+
+---
+
+# 🐳 Docker Commands
+
+## Build Image
+
+```bash
+docker build -t auth-service .
+```
+
+## Run Container
+
+```bash
+docker run -d -p 8080:8080 --name auth-service auth-service
+```
+
+## Stop Container
+
+```bash
+docker stop auth-service
+```
+
+## Remove Container
+
+```bash
+docker rm auth-service
 ```
 
 ---
 
-## ☁️ AWS EC2 Deployment
+# ☁️ AWS EC2 Deployment
 
-The deployment process includes:
-
-- SSH into AWS EC2
-- Pull latest Docker image
-- Stop running container
-- Remove old container
-- Start new container with latest image
-- Pass environment variables securely
+The application is deployed on an Ubuntu-based AWS EC2 instance.
 
 Deployment is fully automated through GitHub Actions.
 
----
+Deployment process:
 
-## 🚀 CI/CD Flow
+- SSH into EC2
+- Pull latest Docker image
+- Stop existing container
+- Remove old container
+- Run latest container
+- Pass environment variables
+- Application becomes live automatically
 
-```
-Code Push
-      │
-      ▼
-GitHub Actions Trigger
-      │
-      ▼
-Maven Build
-      │
-      ▼
-Docker Image Build
-      │
-      ▼
-Push to Docker Hub
-      │
-      ▼
-SSH into AWS EC2
-      │
-      ▼
-Pull Latest Docker Image
-      │
-      ▼
-Deploy New Container
-      │
-      ▼
-Application Updated
-```
+No manual deployment steps are required after code is pushed.
 
 ---
 
-## 📈 Features
+# 🔒 Security Best Practices
 
-- Continuous Integration
-- Continuous Deployment
-- Dockerized Spring Boot Application
-- Secure Secret Management
-- Automated AWS EC2 Deployment
-- Docker Hub Integration
-- GitHub Actions Automation
-- Production Deployment Ready
-
----
-
-## 📚 Learning Objectives
-
-This repository demonstrates practical implementation of:
-
-- GitHub Actions
-- CI/CD Pipelines
-- Docker
-- Docker Hub
-- AWS EC2 Deployment
-- SSH Automation
-- Spring Boot Deployment
-- Secure Environment Variable Management
+- OAuth2 Authentication
+- JWT Access & Refresh Tokens
+- BCrypt Password Encryption
+- Environment Variables
+- GitHub Secrets
+- Docker Container Isolation
+- Spring Security
+- Stateless Authentication
 
 ---
 
-## 📸 Future Enhancements
+# 🚀 Future Enhancements
 
 - Kubernetes Deployment
-- Blue-Green Deployment
-- Rolling Updates
+- Helm Charts
 - SonarQube Integration
-- Unit Test Automation
-- Integration Tests
-- Slack Notifications
-- Prometheus Monitoring
+- Unit Testing Pipeline
+- Integration Testing
+- Redis Token Cache
+- Jenkins Pipeline
+- Nginx Reverse Proxy
+- SSL using Let's Encrypt
+- Monitoring using Prometheus
 - Grafana Dashboard
+- Blue-Green Deployment
+- Rolling Deployment
 
 ---
 
-## 👨‍💻 Author
+# 🎯 Learning Outcomes
 
-**Abhishek Kargeti**
+This project demonstrates practical knowledge of:
 
-Java Full Stack Developer
-
-GitHub: https://github.com/abhishekkargeti1
-
-LinkedIn: https://www.linkedin.com/in/abhishekkargeti/
+- Spring Boot
+- Spring Security
+- OAuth2
+- JWT Authentication
+- REST API Development
+- Docker
+- GitHub Actions
+- Docker Hub
+- AWS EC2
+- Linux Administration
+- SSH Automation
+- CI/CD Pipeline Design
+- Secure Credential Management
+- Cloud Deployment
+- DevOps Best Practices
 
 ---
 
-## ⭐ Support
+# 👨‍💻 Author
 
-If you found this project useful, consider giving it a ⭐ on GitHub.
+## Abhishek Kargeti
 
-It helps others discover the project and motivates further development.
+**Java Full Stack Developer**
+
+Experienced in:
+
+- Spring Boot
+- Spring MVC
+- Spring Security
+- Hibernate
+- MySQL
+- Docker
+- GitHub Actions
+- AWS EC2
+- CI/CD
+- REST APIs
+- Microservices
+
+GitHub:
+https://github.com/abhishekkargeti1
+
+LinkedIn:
+https://www.linkedin.com/in/abhishekkargeti/
+
+---
+
+# ⭐ Show Your Support
+
+If you found this project useful, please consider giving it a **⭐ Star** on GitHub.
+
+It motivates me to continue building and sharing more Java, Spring Boot, Cloud, and DevOps projects.
+
+Happy Coding! 🚀

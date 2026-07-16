@@ -9,42 +9,61 @@ env:
   IMAGE_NAME: myauthserviceimage
 
 jobs:
-  build-deploy:
+
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setting Up Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
           cache: maven
 
       - name: Build Jar
+        working-directory: Auth-Application
         run: mvn clean package -DskipTests
-        working-directory: Auth-Application
 
-  build-push-docker-image:
+      - name: Upload Jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-jar
+          path: Auth-Application/target/*.jar
+
+  docker-build:
+    needs: build
     runs-on: ubuntu-latest
-    steps:
-      - name: Docker Image
-        working-directory: Auth-Application
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }} .
 
-      - name: Login to Docker
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Jar
+        uses: actions/download-artifact@v4
+        with:
+          name: spring-jar
+          path: Auth-Application/target
+
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Image Push
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+      - name: Build Docker Image
+        working-directory: Auth-Application
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }} .
 
-  deploy-to-ec2:
+      - name: Push Docker Image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+
+  deploy:
+    needs: docker-build
     runs-on: ubuntu-latest
+
     steps:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.2.0
@@ -54,9 +73,11 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+
             docker stop myauthserviceapp || true
             docker rm myauthserviceapp || true
-            docker run -d -it \
+
+            docker run -d \
               --name myauthserviceapp \
               -p 8080:8087 \
               -e DB_URL=jdbc:mysql://mysqlcontainer:3306/employee \
@@ -64,4 +85,5 @@ jobs:
               -e DB_PASSWORD=1808 \
               --network my_auth_service_network \
               ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+
             docker image prune -f

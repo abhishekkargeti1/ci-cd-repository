@@ -26,7 +26,7 @@ jobs:
       - name: Build Jar
         run: mvn clean package -DskipTests
         working-directory: Auth-Application
-jobs:
+
   build&push-docker-image:
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +42,7 @@ jobs:
 
       - name: Image Push
         run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
-jobs:
+
   deploy-to-ec2:
     runs-on: ubuntu-latest
     steps:

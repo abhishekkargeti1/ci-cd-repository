@@ -27,7 +27,7 @@ jobs:
         run: mvn clean package -DskipTests
         working-directory: Auth-Application
 
-  build&push-docker-image:
+  build-push-docker-image:
     runs-on: ubuntu-latest
     steps:
       - name: Docker Image
